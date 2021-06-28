@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.model.mapper.jihuiMapper">
+    <!--将常用sql片段提起，然后通过including标签陷入对于的sql语句，注意每列的列名必须唯一-->
+    <sql id="column">
+jid,laiy,kname,jil,gaiy,lxr,phone,mains,cjr,ctime
+    </sql>
+   <select id="selectAll" resultType="com.study.pojo.Jihui">
+       select <include refid="column"></include> from jihui
+   </select>
+    <select id="selectByChooseE" resultType="Jihui" parameterType="Jihui">
+        select <include refid="column"></include> from jihui
+        <where>
+            <if test="laiy!=null and laiy!=''">
+                and laiy = #{laiy}
+            </if>
+            <if test="kname!=null and kname!=''">
+                and kname like concat('%',#{kname},'%')
+            </if>
+            <if test="jil!=null and jil>0">
+                and jil &lt;=#{jil}
+            </if>
+            <if test="lxr!=null and lxr!=''">
+                and lxr = #{lxr}
+            </if>
+        </where>
+        order by jid desc
+    </select>
+
+    <select id="selectById" resultType="com.study.pojo.Jihui">
+        select <include refid="column"></include> from jihui where jid=#{jid}
+    </select>
+</mapper>
